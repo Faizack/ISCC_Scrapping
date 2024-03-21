@@ -1,7 +1,4 @@
 import os
-import requests
-import PyPDF2
-import re
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
