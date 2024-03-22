@@ -2,7 +2,7 @@ import os
 import requests
 import PyPDF2
 import re
-
+import fitz
 
 def download_pdf_file(url: str, pdf_file_name: str) -> bool:
     """Download PDF from given URL to local directory.
@@ -29,16 +29,17 @@ def download_pdf_file(url: str, pdf_file_name: str) -> bool:
 
 
 def extract_emails_from_pdf(pdf_path: str):
-    email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+    email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    emails = {"CB_email": set(), "Department_email": set()}  
 
-    emails = set()
-    with open(pdf_path, 'rb') as pdf_file:
-        pdf_reader = PyPDF2.PdfReader(pdf_file)
-
-        for page_num in range(len(pdf_reader.pages)):
-            page = pdf_reader.pages[page_num]
-            text = page.extract_text()
-            emails.update(re.findall(email_pattern, text))
+    pdf_document = fitz.open(pdf_path)
+    for page_num in range(len(pdf_document)):
+        page = pdf_document.load_page(page_num)
+        text = page.get_text()
+        if "Information on the Certification Body" in text:
+            emails["CB_email"].update(re.findall(email_pattern, text))
+        elif "System User and Audit Process" in text:
+            emails["Department_email"].update(re.findall(email_pattern, text))
 
     return emails
 
@@ -88,4 +89,4 @@ if __name__ == '__main__':
         print("\nNo phone numbers found in the PDF.")
 
     # Remove the downloaded PDF file
-    os.remove(pdf_path)
+    # os.remove(pdf_path)
