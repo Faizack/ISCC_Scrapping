@@ -4,3 +4,4 @@ __pycache__
 table
 *.csv
 chromedriver.exe
+pdf
