@@ -5,6 +5,7 @@ __pycache__
 # internal Data
 table
 *.csv
+*.xlsx
 chromedriver.exe
 *.pdf 
 pdf
@@ -14,3 +15,4 @@ ProxyList.json
 #env
 
 env
+.env
