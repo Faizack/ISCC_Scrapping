@@ -10,7 +10,7 @@ chromedriver.exe
 *.pdf 
 pdf
 ProxyList.json
-
+*.json
 
 #env
 
